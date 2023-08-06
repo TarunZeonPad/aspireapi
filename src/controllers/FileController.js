@@ -45,7 +45,7 @@ function fetchFileFromS3(req, res) {
       console.log(constantJson);
       const insertReponse = await arangoDBService.insertData(constantJson.production.msi_s3_store,dataResponseForS3);
       console.log(insertReponse);
-      res.status(200).json(dataResponseForS3);
+      res.status(201).json("Successfully inserted into ArangoDB");
 
     } catch (error) {
       console.error('Error while performing operation:', error);
