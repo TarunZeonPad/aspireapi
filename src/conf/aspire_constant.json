@@ -1,0 +1,13 @@
+{
+      "production": {
+        "region": "eu-north-1",
+        "accessKeyId": "AKIAR5AVMEEAFOVXJGPI",
+        "secretAccessKey": "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",      
+        "environment" : "PROD",
+        "application" : "ASPIRE_MSI",
+        "configuration" : "APPLICATION_VERSION",
+        "system_details" : "system_details",
+        "msi_s3_store":"msi_s3_store"
+
+    }
+}

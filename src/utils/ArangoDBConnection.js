@@ -1,12 +1,12 @@
 const arangojs = require('arangojs');
 
 class ArangoDBConnection {
-  constructor() { 
+  constructor(dataResponse) { 
     this.docClient = new arangojs.Database({
-        url: 'http://172.31.34.233:8529',
-        databaseName: 'msidb'
+        url: dataResponse.database_url,
+        databaseName: dataResponse.database_name
     });
-    this.docClient.useBasicAuth('root', 'welcome*123');
+    this.docClient.useBasicAuth(dataResponse.database_username, dataResponse.database_password);
   }
 }
 

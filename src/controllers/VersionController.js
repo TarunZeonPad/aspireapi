@@ -1,32 +1,39 @@
 const Response = require('../models/Response');
-const ArangoDBConnection = require('../utils/ArangoDBConnection');
-const DataFetcherService = require('../service/DataFetcherService');
+const path = require("path");
+const AppConfigConnection = require('../utils/AppConfigConnection');
 
-const arangoDBConnection = new ArangoDBConnection();
-const dataFetcherService = new DataFetcherService(arangoDBConnection);
+const JsonFileLoader = require('../utils/JsonFileLoader');
+const AppConfigParamFetchService =  require('../service/AppConfigParamFetchService');
+
+const jsonFileLoader = new JsonFileLoader();
+const fullPath = path.resolve("src/conf/aspire_constant.json");
+const constantJson = jsonFileLoader.readJsonFile(fullPath);
+
+const appConfigConnection = new AppConfigConnection(constantJson);
+const appConfigParamFetchService = new AppConfigParamFetchService(appConfigConnection);
 
 function fetchVersions(req, res) {
-  // Read the tenantId from the request body
   const { tenantId } = req.body;
+  console.log(tenantId);
+  const params = {
+    Application: constantJson.production.application,
+    Environment: constantJson.production.environment,
+    Configuration: constantJson.production.configuration,
+    ClientId: constantJson.production.accessKeyId
+  };
 
-  dataFetcherService.readData("msiVersionCollection")
-  .then(dataResponse => {
-    console.log('Retrieved data array:');
-    console.log(dataResponse);
-    const response = new Response('1.0', 'Admin', new Date());
-    res.status(201).json(response);
-  })
-  .catch(error => {
-    console.error('Error reading data:', error);
-  })
-  .finally(() => {
-    // Close the ArangoDB connection
-    //db.close();
-  });
-  // Assuming tenantId is valid, create a new response object
+  (async () => {
+    try {
+      const dataResponse = await appConfigParamFetchService.fetchParameter(params);
+      const response = new Response(dataResponse.version);
+      res.status(200).json(response);
+    } catch (error) {
+      console.error('Error reading data:', error);
+    }
+  })();
   
 }
 
 module.exports = {
-    fetchVersions,
+    fetchVersions
 };

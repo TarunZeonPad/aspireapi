@@ -1,8 +1,6 @@
 class Response {
-    constructor(version, createdBy, creationDate) {
+    constructor(version) {
       this.versionNumber = version;
-      this.createdBy = createdBy;
-      this.creationDate = creationDate;
     }
   }
   

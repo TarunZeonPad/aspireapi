@@ -1,0 +1,7 @@
+{
+    "production": {
+        "fetchVersion": "/api/aspire/fetch-version",
+        "fetchFile": "/api/aspire/fetch-file"
+        
+      }
+}
